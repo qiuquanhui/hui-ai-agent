@@ -1,8 +1,16 @@
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+
+### 本地密钥配置（含真实 API Key，严禁提交） ###
+src/main/resources/application-local.yml
+
+### ZCode 工作目录 ###
+.zcode/
+
 
 ### STS ###
 .apt_generated

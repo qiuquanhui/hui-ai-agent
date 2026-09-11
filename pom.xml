@@ -50,6 +50,30 @@
 			<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
 			<version>4.4.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.alibaba/dashscope-sdk-java -->
+<!--		<dependency>-->
+<!--			<groupId>com.alibaba</groupId>-->
+<!--			<artifactId>dashscope-sdk-java</artifactId>-->
+<!--			<version>2.19.1</version>-->
+<!--		</dependency>-->
+		<!-- 灵积（版本需与 langchain4j-community-dashscope 1.0.0-beta2 兼容，2.2x 会报 NoSuchMethodError） -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dashscope-sdk-java</artifactId>
+			<version>2.19.1</version>
+		</dependency>
+		<dependency>
+		<!-- spring alibaba ai -->
+			<groupId>com.alibaba.cloud.ai</groupId>
+			<artifactId>spring-ai-alibaba-starter</artifactId>
+			<version>1.0.0-M6.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-community-dashscope -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-community-dashscope</artifactId>
+			<version>1.0.0-beta2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -65,6 +89,9 @@
 							<version>1.18.36</version>
 						</path>
 					</annotationProcessorPaths>
+					<source>21</source>
+					<target>21</target>
+					<compilerArgs>--enable-preview</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -81,4 +108,14 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
