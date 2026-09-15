@@ -8,6 +8,12 @@ spring:
     dashscope:
       # 真实 key 配置在 application-local.yml 中，此处仅为占位符
       api-key: sk-请把真实key配置在application-local.yml中
+      # ollama 的注入
+#    ollama:
+#      base-url: http://localhost:11434
+#      chat:
+#          model: granite4.2:3b
+
 server:
   port: 8123
   servlet:
