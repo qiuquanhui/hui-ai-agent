@@ -20,7 +20,7 @@ class LoveAppTest {
     void testChat() {
         String chatId = UUID.randomUUID().toString();
         //第一轮
-        String message = "你好，我是程序员小der";
+        String message = "你好，我是程序员derder";
         String answer = loveApp.doChat(message,chatId);
         Assertions.assertNotNull(answer);
         //第二轮

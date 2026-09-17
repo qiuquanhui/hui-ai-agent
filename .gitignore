@@ -1,6 +1,8 @@
 
 HELP.md
 target/
+chat-memory
+tmp
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
