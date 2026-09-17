@@ -11,6 +11,7 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -98,8 +99,28 @@ public class LoveApp {
     }
 
     // 向量存储变量
+//    @Resource
+//    private VectorStore loveAppVectorStore;
+
+//    RAG 本地知识库
+//    public String doChatWithRag(String message, String chatId) {
+//        ChatResponse chatResponse = chatClient
+//                .prompt()
+//                .user(message)
+//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+//                // 应用知识库问答
+//                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
+//                .call()
+//                .chatResponse();
+//        String content = chatResponse.getResult().getOutput().getText();
+//        log.info("content: {}", content);
+//        return content;
+//    }
+
+    //RAG 使用云知识库调用
     @Resource
-    private VectorStore loveAppVectorStore;
+    private Advisor loveAppRagCloudAdvisor;
 
     public String doChatWithRag(String message, String chatId) {
         ChatResponse chatResponse = chatClient
@@ -107,8 +128,10 @@ public class LoveApp {
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
                         .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-                // 应用知识库问答
-                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
+                // 开启日志，便于观察效果
+                .advisors(new MyLoggerAdvisor())
+                // 应用增强检索服务（云知识库服务）
+                .advisors(loveAppRagCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
