@@ -1,5 +1,7 @@
 package com.hui.huiaiagent.app;
 
+import com.hui.huiaiagent.advisor.AuthorizedAdvisor;
+import com.hui.huiaiagent.advisor.ForbiddenWordsAdvisor;
 import com.hui.huiaiagent.advisor.MyLoggerAdvisor;
 import com.hui.huiaiagent.chatmemory.FileBasedChatMemory;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +14,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_RETRIEVE_SIZE_KEY;
@@ -28,15 +31,20 @@ public class LoveApp {
             "引导用户详述事情经过、对方反应及自身想法，以便给出专属解决方案。";
 
     public LoveApp(ChatModel dashscopeChatModel) {
-        //初始化基于内存的对话记忆
-//        ChatMemory chatMemory = new InMemoryChatMemory();
+//        初始化基于内存的对话记忆
+        ChatMemory chatMemory = new InMemoryChatMemory();
         // 初始化基于文件的对话记忆
-        String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
-        ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
+       // String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
+        //  ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
         //初始化 chatClient
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
+                        // 权限拦截器
+                        new AuthorizedAdvisor(Set.of("badGuy")),   // 可传入封禁名单，演示可先写 new AuthorizedAdvisor()
+                        // 违规词拦截器
+                        new ForbiddenWordsAdvisor(),
+                        //记忆拦截器
                         new MessageChatMemoryAdvisor(chatMemory),
                         // 自定义日志 Advisor，可按需开启
                         new MyLoggerAdvisor()
@@ -53,7 +61,9 @@ public class LoveApp {
                 .prompt()
                 .user(message)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10)
+                        .param(AuthorizedAdvisor.AUTH_USER_ID_PARAM,"derder")
+                )
                 .call()
                 .chatResponse();
 
