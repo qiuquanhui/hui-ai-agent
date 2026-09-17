@@ -4,6 +4,7 @@ import com.hui.huiaiagent.advisor.AuthorizedAdvisor;
 import com.hui.huiaiagent.advisor.ForbiddenWordsAdvisor;
 import com.hui.huiaiagent.advisor.MyLoggerAdvisor;
 import com.hui.huiaiagent.chatmemory.FileBasedChatMemory;
+import com.hui.huiaiagent.chatmemory.MysqlChatMemory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -30,13 +31,15 @@ public class LoveApp {
             "恋爱状态询问沟通、习惯差异引发的矛盾；已婚状态询问家庭责任与亲属关系处理的问题。" +
             "引导用户详述事情经过、对方反应及自身想法，以便给出专属解决方案。";
 
-    public LoveApp(ChatModel dashscopeChatModel) {
+    public LoveApp(ChatModel dashscopeChatModel,MysqlChatMemory mysqlChatMemory) {
 //        初始化基于内存的对话记忆
-        ChatMemory chatMemory = new InMemoryChatMemory();
+//        ChatMemory chatMemory = new InMemoryChatMemory();
         // 初始化基于文件的对话记忆
        // String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
         //  ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
         //初始化 chatClient
+        // 初始化基于数据库的对话记忆
+        ChatMemory chatMemory = mysqlChatMemory;
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(
