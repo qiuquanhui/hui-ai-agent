@@ -32,11 +32,8 @@ public class PgVectorVectorStoreConfig {
                 .vectorTableName("vector_store")     // Optional: defaults to "vector_store"
                 .maxDocumentBatchSize(10000)         // Optional: defaults to 10000
                 .build();
-        // 加载文档
-        List<Document> documents = loveAppDocumentLoader.loadMarkdowns();
-        vectorStore.add(documents);
-        //有些 Embedding 模型可能有加载文档的单批数量限制，这时你可以通过 for 循环分为多批插入。
-        // 加载文档，分批添加（DashScope Embedding API 限制单次 batch size 不超过 10）
+        // 加载文档，分批添加（DashScope Embedding API 限制单次最多 25 条，一次性全塞会报 The input texts limit 25）
+//       已加入一次，需要文档时再继续加入
 //        List<Document> documents = loveAppDocumentLoader.loadMarkdowns();
 //        int batchSize = 10;
 //        for (int i = 0; i < documents.size(); i += batchSize) {

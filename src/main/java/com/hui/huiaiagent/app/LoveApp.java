@@ -139,4 +139,27 @@ public class LoveApp {
         return content;
     }
 
+    //使用 postgresql 的vectorStore
+
+    @Resource
+    private VectorStore pgVectorVectorStore;
+
+    //使用postgresql 调用
+    public String doChatWithPostgresql(String message,String chatId){
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .advisors(new MyLoggerAdvisor())
+                // 应用 RAG 检索增强服务（基于 PgVector 向量存储）
+                .advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+
+    }
+
 }

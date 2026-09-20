@@ -49,4 +49,12 @@ class LoveAppTest {
         String answer =  loveApp.doChatWithRag(message, chatId);
         Assertions.assertNotNull(answer);
     }
+
+    @Test
+    void doChatWithPostgresql() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "我已经结婚了，但是结婚之后日常被家务、琐事缠身，夫妻经常因为家务分工吵架，怎么办，顺便给我提供一个课程";
+        String answer = loveApp.doChatWithPostgresql(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
 }
