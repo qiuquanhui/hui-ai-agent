@@ -37,13 +37,13 @@ public class LoveApp {
 
     public LoveApp(ChatModel dashscopeChatModel,MysqlChatMemory mysqlChatMemory) {
 //        初始化基于内存的对话记忆
-//        ChatMemory chatMemory = new InMemoryChatMemory();
+        ChatMemory chatMemory = new InMemoryChatMemory();
         // 初始化基于文件的对话记忆
        // String fileDir = System.getProperty("user.dir") + "/tmp/chat-memory";
         //  ChatMemory chatMemory = new FileBasedChatMemory(fileDir);
         //初始化 chatClient
         // 初始化基于数据库的对话记忆
-        ChatMemory chatMemory = mysqlChatMemory;
+      //  ChatMemory chatMemory = mysqlChatMemory;
         chatClient = ChatClient.builder(dashscopeChatModel)
                 .defaultSystem(SYSTEM_PROMPT)
                 .defaultAdvisors(

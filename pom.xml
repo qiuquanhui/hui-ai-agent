@@ -118,6 +118,18 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--	pgvector：M6 版 store 模块（与项目其余 Spring AI M6 依赖保持同版本；
+			自动配置已在启动类 exclude，VectorStore 由 PgVectorVectorStoreConfig 手动定义）	-->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-pgvector-store</artifactId>
+			<version>1.0.0-M6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -5,6 +5,13 @@ spring:
   config:
     import: optional:classpath:application-local.yml
   ai:
+    #   向量数据库的配置
+    vectorstore:
+      pgvector:
+        index-type: HNSW  # 向量索引算法
+        dimensions: 1536  # 1536 维的向量
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
     dashscope:
       # 真实 key 配置在 application-local.yml 中，此处仅为占位符
       api-key: sk-请把真实key配置在application-local.yml中
