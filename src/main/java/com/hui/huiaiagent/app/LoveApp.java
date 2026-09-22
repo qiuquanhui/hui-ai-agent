@@ -5,6 +5,7 @@ import com.hui.huiaiagent.advisor.ForbiddenWordsAdvisor;
 import com.hui.huiaiagent.advisor.MyLoggerAdvisor;
 import com.hui.huiaiagent.chatmemory.FileBasedChatMemory;
 import com.hui.huiaiagent.chatmemory.MysqlChatMemory;
+import com.hui.huiaiagent.rag.QueryRewriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -102,7 +103,29 @@ public class LoveApp {
     @Resource
     private VectorStore loveAppVectorStore;
 
-//    RAG 本地知识库
+
+
+    @Resource
+    private QueryRewriter queryRewriter;
+
+    //查询重写器
+    public String doChatWithRagQueryWriter(String message, String chatId) {
+        // 查询重写
+        String rewrittenMessage = queryRewriter.doQueryRewrite(message);
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(rewrittenMessage)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 应用知识库问答
+                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        return content;
+    }
+
+    //    RAG 本地知识库
     public String doChatWithRag(String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
