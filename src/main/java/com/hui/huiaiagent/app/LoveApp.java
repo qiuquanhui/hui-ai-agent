@@ -98,31 +98,31 @@ public class LoveApp {
         return loveReport;
     }
 
-    // 向量存储变量
-//    @Resource
-//    private VectorStore loveAppVectorStore;
+//     向量存储变量
+    @Resource
+    private VectorStore loveAppVectorStore;
 
 //    RAG 本地知识库
-//    public String doChatWithRag(String message, String chatId) {
-//        ChatResponse chatResponse = chatClient
-//                .prompt()
-//                .user(message)
-//                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
-//                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
-//                // 应用知识库问答
-//                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
-//                .call()
-//                .chatResponse();
-//        String content = chatResponse.getResult().getOutput().getText();
-//        log.info("content: {}", content);
-//        return content;
-//    }
+    public String doChatWithRag(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 应用知识库问答
+                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content: {}", content);
+        return content;
+    }
 
     //RAG 使用云知识库调用
     @Resource
     private Advisor loveAppRagCloudAdvisor;
 
-    public String doChatWithRag(String message, String chatId) {
+    public String doChatWithRag2(String message, String chatId) {
         ChatResponse chatResponse = chatClient
                 .prompt()
                 .user(message)
