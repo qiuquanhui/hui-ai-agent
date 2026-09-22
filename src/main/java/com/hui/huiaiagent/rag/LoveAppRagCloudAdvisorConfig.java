@@ -10,7 +10,9 @@ import org.springframework.ai.rag.retrieval.search.DocumentRetriever;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+/*
+*   云知识库向量存储配置
+*/
 @Configuration
 @Slf4j
 class LoveAppRagCloudAdvisorConfig {
