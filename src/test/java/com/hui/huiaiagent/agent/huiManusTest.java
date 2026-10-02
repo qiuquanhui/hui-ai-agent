@@ -5,13 +5,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class huiManusTest {
 
     @Resource
-    private huiManus huiManus;
+    private HuiManus huiManus;
 
     @Test
     void run() {

@@ -1,9 +1,11 @@
 package com.hui.huiaiagent.controller;
 
+import com.hui.huiaiagent.agent.HuiManus;
 import com.hui.huiaiagent.app.LoveApp;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.tool.ToolCallback;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,8 @@ public class AiController {
 
     @Resource
     private ChatModel dashscopeChatModel;
+    @Autowired
+    private HuiManus huiManus;
 
     @GetMapping("/love_app/chat/sync")
     public String doChatWithLoveAppSync(String message, String chatId) {
@@ -67,6 +71,19 @@ public class AiController {
                 );
         // 返回emitter
         return emitter;
+    }
+
+
+    /**
+     * 流式调用 Manus 超级智能体
+     *
+     * @param message
+     * @return
+     */
+    @GetMapping("/manus/chat")
+    public SseEmitter doChatWithManus(String message) {
+        HuiManus huiManus = new HuiManus(allTools, dashscopeChatModel);
+        return huiManus.runStream(message);
     }
 
 
