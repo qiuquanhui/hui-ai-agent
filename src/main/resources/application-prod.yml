@@ -1,0 +1,24 @@
+# ============================================================
+# 生产环境配置：只放非敏感配置项，此文件会提交到 git
+# 真实密钥（DashScope / SearchAPI / 数据库密码）严禁写在这里，
+# 一律在部署平台用环境变量注入：
+#   spring.ai.dashscope.api-key    -> SPRING_AI_DASHSCOPE_API_KEY
+#   search-api.api-key             -> SEARCH_API_API_KEY
+#   spring.datasource.url          -> SPRING_DATASOURCE_URL
+#   spring.datasource.username     -> SPRING_DATASOURCE_USERNAME
+#   spring.datasource.password     -> SPRING_DATASOURCE_PASSWORD
+# （环境变量优先级高于 jar 内所有 application*.yml，会自动覆盖）
+# ============================================================
+
+ # 验证服务启动时临时开启接口文档；确认能访问后，上线前改回
+ # springdoc.api-docs.enabled: false 和 knife4j.production: true 关闭文档
+springdoc:
+  api-docs:
+    enabled: true
+knife4j:
+  production: false
+
+# 生产环境降低 AI 调用链路的日志级别，避免刷屏
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: info
